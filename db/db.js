@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import process from 'dotenv/config'
+import 'dotenv/config'
 
 export default async function createDb() {
     try {
