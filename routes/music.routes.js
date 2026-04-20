@@ -9,8 +9,11 @@ const upload = multer({
     storage: memoryStorage()
 })
 
-musicRouter.post('/create',authMiddleware, upload.single("music"), musicController.createMusic)
-musicRouter.post('/create-album',authMiddleware, musicController.createAlbum)
+musicRouter.post('/create',authMiddleware.authArtist, upload.single("music"), musicController.createMusic)
+musicRouter.post('/create-album',authMiddleware.authArtist, musicController.createAlbum)
+musicRouter.get('/',authMiddleware.authUser, musicController.getAllMusic)
+musicRouter.get('/albums',authMiddleware.authUser, musicController.getAlbums)
+musicRouter.get('/albums/:albumId',authMiddleware.authUser, musicController.getAlbums)
 
 
 export default musicRouter;
