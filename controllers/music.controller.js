@@ -2,6 +2,7 @@ import musicModel from "../models/music.model.js";
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 import upload from '../services/upload.service.js'
+import albumModel from "../models/album.model.js";
 
 async function createMusic(req, res) {
 
@@ -41,4 +42,39 @@ async function createMusic(req, res) {
     }
 }
 
-export default createMusic;
+async function createAlbum(req, res) {
+    const token = req.cookies.token;
+    if(!token) {
+        return res.status(409).json({message: "unauthorized"});
+    }
+
+    try{
+        const decode = jwt.verify(token, process.env.JWT_SECRET)
+        if(decode.role !== 'artist') {
+            return res.status(401).json({message: "Forbidden"})
+        }
+        
+        const {title, musicIds} = req.body;
+
+        const album = albumModel.create({
+            title,
+            artist: decoded.id,
+            musics: musicIds
+        })
+
+        res.status(201).json({message: "album created successfully", 
+            album: {
+                title: album.title,
+                id: album._id,
+                artist: album.artist,
+                musics: album.music
+            }
+        })
+    }
+
+    catch (err) {
+        return res.status(409).json({message: "unauthorized"});
+    }
+}
+
+export default {createMusic, createAlbum};

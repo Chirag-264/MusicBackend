@@ -1,5 +1,5 @@
 import express from 'express';
-import createMusic from '../controllers/music.controller.js'
+import musicController from '../controllers/music.controller.js'
 import multer, { memoryStorage } from 'multer'
 
 
@@ -8,7 +8,8 @@ const upload = multer({
     storage: memoryStorage()
 })
 
-musicRouter.post('/create',upload.single("music"), createMusic)
+musicRouter.post('/create',upload.single("music"), musicController.createMusic)
+musicRouter.post('/create-album',upload.single("music"), musicController.createAlbum)
 
 
 export default musicRouter;
